@@ -10,7 +10,7 @@ const schema = {
         primaryKey: true,
         autoIncrement: true
     },
-    name: DataTypes.STRING,
+    name: DataTypes.STRING
 
 }
 /**

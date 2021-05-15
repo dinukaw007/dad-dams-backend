@@ -15,9 +15,7 @@
 function transform(datum) {
     // Change according to user needs
     return {
-        resCode: datum.resCode,
-        resDesc: datum.resDesc,
-        errorMassage: datum.errorMassage
+        data: datum
     };
 }
 

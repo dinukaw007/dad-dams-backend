@@ -23,7 +23,7 @@ const schema = {
     date_of_appointment: DataTypes.DATE,
     investigating_officer: DataTypes.INTEGER,
     officers_handling_the_complaint: DataTypes.STRING,
-    is_report_submitted: DataTypes.Boolean,
+    is_report_submitted: DataTypes.BOOLEAN,
     submitted_date: DataTypes.DATE,
     amount_due: DataTypes.INTEGER,
     amount_charged: DataTypes.INTEGER,

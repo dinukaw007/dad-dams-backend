@@ -2,7 +2,7 @@
 
 const { DataTypes } = require('sequelize')
 
-const name = 'other_liaison_officers'
+const name = 'inquiry_type'
 
 const schema = {
     id: {
@@ -10,14 +10,9 @@ const schema = {
         primaryKey: true,
         autoIncrement: true
     },
-    inquiry_id: DataTypes.INTEGER,
-    other_liaison_officer_name: DataTypes.STRING,
-    other_liaison_officer_position: DataTypes.INTEGER,
-    other_liaison_officer_facts: DataTypes.STRING,
+    name: DataTypes.STRING,
+
 }
-
-
-
 /**
  *
  * @param dbAdapter

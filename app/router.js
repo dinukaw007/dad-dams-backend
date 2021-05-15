@@ -26,13 +26,17 @@ const DAMSController = require('./controllers/dams_controller');
 module.exports = (app) => {
 
     // constructor ___
-    const sampleController = DAMSController(app);
+    const damsController = DAMSController(app);
 
     // api info
-    app.post('/action', sampleController.exampleMethod);
-    app.get('/api/data/districts', sampleController.exampleMethod);
-    app.get('/api/data/centers/:districts', sampleController.exampleMethod);
-    app.get('/api/data/positions', sampleController.exampleMethod);
-    app.post('/api/inquiry', sampleController.exampleMethod);
-    app.update('/api/inquiry', sampleController.exampleMethod)
+    app.get('/api/data/districts', damsController.getDistricts)
+    app.get('/api/data/centers/:districtId', damsController.getCenters)
+    app.get('/api/data/centers/', damsController.getCenters)
+    app.get('/api/data/positions', damsController.getPositions)
+    app.get('/api/data/inquirytypes', damsController.getInquiryTypes)
+    app.get('/api/data/malpracticetypes', damsController.getMalpracticeTypes)
+    app.post('/api/inquiry', damsController.createInquiry)
+    app.put('/api/inquiry', damsController.updateInquiry)
+    app.get('/api/inquiry', damsController.getInquiries)
+    app.get('/api/inquiry/:inquiryId', damsController.getInquiry)
 };

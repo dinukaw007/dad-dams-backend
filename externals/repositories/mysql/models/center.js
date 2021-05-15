@@ -10,6 +10,7 @@ const schema = {
         primaryKey: true,
         autoIncrement: true
     },
+    district_id: DataTypes.INTEGER,
     name: DataTypes.STRING,
 
 }
