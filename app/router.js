@@ -29,6 +29,7 @@ module.exports = (app) => {
     const damsController = DAMSController(app);
 
     // api info
+    app.get('/', damsController.tester)
     app.get('/api/data/districts', damsController.getDistricts)
     app.get('/api/data/centers/:districtId', damsController.getCenters)
     app.get('/api/data/centers/', damsController.getCenters)
