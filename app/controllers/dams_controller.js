@@ -198,6 +198,14 @@ module.exports = (app) => {
     }
     async function getInquiry(req, res){}
     async function getInquiries(req, res){}
+    async function tester(req, res){
+        return res.status(responseCodes.OK).json(
+            responseMapper.map(
+                "shit works"
+            )
+        );
+    }
+
 
 
     return {
@@ -210,5 +218,6 @@ module.exports = (app) => {
         updateInquiry: updateInquiry,
         getInquiry: getInquiry,
         getInquiries: getInquiries,
+        tester:tester
     };
 }
