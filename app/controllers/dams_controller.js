@@ -182,7 +182,6 @@ module.exports = (app) => {
             // Validate the request
             validator.validate(data, rules);
 
-
             // Call domain business logic
             let domainResponseDto = await updateInquiryUsecase.updateInquiry(data);
 
