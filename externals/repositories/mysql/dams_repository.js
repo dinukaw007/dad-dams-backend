@@ -14,10 +14,12 @@ module.exports = (dbAdapter) => {
     const otherLeisonOfficersModel = require('./models/other_liaison_officers')(dbAdapter)
 
     otherLeisonOfficersModel.belongsTo(inquiryModel, {
-        foreignKey: 'inquiry_id'
+        foreignKey: 'inquiry_id',
+        targetKey:'inquiry_id'
     })
     inquiryModel.hasMany(otherLeisonOfficersModel, {
-        as: 'other_liaison_officers'
+        as: 'other_liaison_officers',
+        foreignKey:'inquiry_id'
     })
 
     /**
@@ -89,8 +91,54 @@ module.exports = (dbAdapter) => {
      * @return {Promise<*>}
      */
     async function addInquiry (data) {
-        return await inquiryModel.bulkCreate(data)
+        return await inquiryModel.create(data)
     }
+
+    /**
+     * .
+     * @param districtId
+     * @return {Promise<*>}
+     */
+    async function updateInquiry (data) {
+        await otherLeisonOfficersModel.destroy({
+            where:{
+                inquiry_id: data.inquiry_id
+            }
+        })
+        return await inquiryModel.bulkCreate([data],{
+            updateOnDuplicate: ["inquiry_id", "file_no"],
+            include:{
+                model: otherLeisonOfficersModel,
+                as: 'other_liaison_officers'
+            }
+        })
+    }
+
+    /**
+     * .
+     * @param districtId
+     * @return {Promise<*>}
+     */
+    async function getInquiries (searchParams) {
+        const offset = searchParams.offset
+        const limit = searchParams.limit
+
+        return await inquiryModel.findAndCountAll({
+            attributes: [''],
+            order: [
+                ['file_start_date', 'DESC']
+            ], // add query parms here
+        })
+    }
+    /**
+     * .
+     * @param districtId
+     * @return {Promise<*>}
+     */
+    async function getInquiry (data) {
+        return await inquiryModel.findOne()
+    }
+
 
     return {
         getDistricts: getDistricts,
@@ -98,6 +146,10 @@ module.exports = (dbAdapter) => {
         getInquiryTypes: getInquiryTypes,
         getMalpracticeTypes: getMalpracticeTypes,
         getPositions: getPositions,
+        addInquiry:addInquiry,
+        updateInquiry:updateInquiry,
+        getInquiries:getInquiries,
+        getInquiry:getInquiry
 
     }
 }

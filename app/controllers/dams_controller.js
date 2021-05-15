@@ -21,6 +21,14 @@ const centersUsecaseImp = require('./../../domain/usecases/dams/get_centers');
 const inquiryTypesUsecaseImp = require('./../../domain/usecases/dams/get_inquiry_types');
 const malpracticeTypesUsecaseImp = require('./../../domain/usecases/dams/get_malpractice_types');
 const postionsUsecaseImp = require('./../../domain/usecases/dams/get_positions');
+
+
+const createInquiryUsecaseImp = require('./../../domain/usecases/dams/create_inquiry');
+const updateInquiryUsecaseImp = require('./../../domain/usecases/dams/update_inquiry');
+const getInquiryUsecaseImp = require('./../../domain/usecases/dams/get_inquiry');
+const getInquriesUsecaseImp = require('./../../domain/usecases/dams/get_inquiries');
+
+
 const LoggingUtils = require('./../../externals/log/logging_utils');
 
 module.exports = (app) => {
@@ -37,6 +45,11 @@ module.exports = (app) => {
     const inquiryTypesUsecase = inquiryTypesUsecaseImp(container.repositories.damsRepository);
     const malpracticeTypesUsecase = malpracticeTypesUsecaseImp(container.repositories.damsRepository);
     const positionsUsecase = postionsUsecaseImp(container.repositories.damsRepository);
+
+    const createInquiryUsecase = createInquiryUsecaseImp(container.repositories.damsRepository);
+    const updateInquiryUsecase = updateInquiryUsecaseImp(container.repositories.damsRepository);
+    const getInquiryUsecase = getInquiryUsecaseImp(container.repositories.damsRepository);
+    const getInquiriesUsecase = getInquriesUsecaseImp(container.repositories.damsRepository);
 
 
     async function getDistricts(req, res){
@@ -118,28 +131,35 @@ module.exports = (app) => {
 
             // Defining validation rules
             const rules = {
-                id: {
+                file_no: {
                     presence: true,
-                    numericality: {
-                        onlyInteger: true
-                    }
-                }
+
+                },
+                file_start_date: {
+                    presence: true,
+
+                },
+                file_name: {
+                    presence: true,
+
+                },
+                file_start_reason: {
+                    presence: true,
+
+                },
             };
 
             // Validate the request
             validator.validate(data, rules);
 
-            // request map to domain object
-            let domainRequestDto = SampleDomainRequestDto();
-            domainRequestDto.id = req.body.id;
 
             // Call domain business logic
-            let domainResponseDto = await sampleUseCase.process(domainRequestDto);
+            let domainResponseDto = await createInquiryUsecase.createInquiry(data);
 
             //Transform domain response
             return res.status(responseCodes.OK).json(
                 responseMapper.map(
-                    responseMapper.transform(domainResponseDto, districtTransformer, false)
+                    domainResponseDto
                 )
             );
 
@@ -147,7 +167,36 @@ module.exports = (app) => {
             asyncErrorHandler.handle(err, res);
         }
     }
-    async function updateInquiry(req, res){}
+    async function updateInquiry(req, res){
+        await logger.info(`Get Districts Controller ${req}`);
+        try {
+            let data = req.body;
+
+            // Defining validation rules
+            const rules = {
+                inquiry_id: {
+                    presence: true,
+                }
+            };
+
+            // Validate the request
+            validator.validate(data, rules);
+
+
+            // Call domain business logic
+            let domainResponseDto = await updateInquiryUsecase.updateInquiry(data);
+
+            //Transform domain response
+            return res.status(responseCodes.OK).json(
+                responseMapper.map(
+                    domainResponseDto
+                )
+            );
+
+        } catch (err) {
+            asyncErrorHandler.handle(err, res);
+        }
+    }
     async function getInquiry(req, res){}
     async function getInquiries(req, res){}
 
