@@ -57,7 +57,9 @@ jobs:
 
       AZURE_WEBAPP_NAME: web-dad-dms-backend
       AZURE_WEBAPP_PUBLISH_PROFILE: cjlxn0BHBfv9QFy3rHkReMlNeLDmlJrYrCsCnpl5dqvF92dpTCBD85HALmyL
-      AZURE_WEBAPP_PACKAGE_PATH: build
+      AZURE_WEBAPP_PACKAGE_PATH: '.'
+
+
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ env.NODE_VERSION }}
@@ -76,4 +78,4 @@ jobs:
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-#        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
