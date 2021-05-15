@@ -11,7 +11,6 @@
 const mysql = require('./../../externals/adapters/mysql')
 
 function resolve(container) {
-
     container.adapters = {
             db: mysql({
                 host: process.env.DB_MYSQL_HOST,
