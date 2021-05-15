@@ -196,6 +196,7 @@ module.exports = (app) => {
             asyncErrorHandler.handle(err, res);
         }
     }
+
     async function getInquiry(req, res){}
     async function getInquiries(req, res){}
     async function tester(req, res){
