@@ -4,9 +4,7 @@
  *
  * These material are unpublished, proprietary, confidential source
  * code of ImitiLabs and constitute a TRADE
-
  *
- .
  *
  */
 
