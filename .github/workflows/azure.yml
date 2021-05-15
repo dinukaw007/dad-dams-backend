@@ -59,6 +59,8 @@ jobs:
       AZURE_WEBAPP_PUBLISH_PROFILE: cjlxn0BHBfv9QFy3rHkReMlNeLDmlJrYrCsCnpl5dqvF92dpTCBD85HALmyL
       AZURE_WEBAPP_PACKAGE_PATH: '.'
 
+      PORT: 8888
+
 
     steps:
     - uses: actions/checkout@v2
