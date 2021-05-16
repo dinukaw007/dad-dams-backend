@@ -48,6 +48,7 @@ jobs:
       FILE_LOG_LEVEL: debug
       CONSOLE_LOG_LEVEL: info
       MASSAGE_TYPE_HEADER_NAME: Massage-Type
+      PORT: 8888
 
       DB_MYSQL_HOST: database-dad-dms.mysql.database.azure.com
       DB_MYSQL_DATABASE: db_dad_dms
@@ -58,8 +59,6 @@ jobs:
       AZURE_WEBAPP_NAME: web-dad-dms-backend
       AZURE_WEBAPP_PUBLISH_PROFILE: cjlxn0BHBfv9QFy3rHkReMlNeLDmlJrYrCsCnpl5dqvF92dpTCBD85HALmyL
       AZURE_WEBAPP_PACKAGE_PATH: '.'
-
-      PORT: 8888
 
 
     steps:

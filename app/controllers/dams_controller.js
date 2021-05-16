@@ -133,7 +133,9 @@ module.exports = (app) => {
             const rules = {
                 file_no: {
                     presence: true,
-
+                },
+                inquiry_type_no: {
+                    presence: true,
                 },
                 file_start_date: {
                     presence: true,
