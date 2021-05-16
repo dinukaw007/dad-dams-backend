@@ -21,7 +21,7 @@ module.exports = (damsRepository) => {
      * @param domainRequest
      * @returns {Promise<{resDesc: string, errorMassage: string, resCode: string}>}
      */
-    async function getCenters(data) {
+    async function getInquiries(data) {
         try {
             const page = data.page_number || null
             const limit = data.page_size || null
@@ -33,8 +33,8 @@ module.exports = (damsRepository) => {
                 sort: data.sort || 'ASC',
             }
 
-            const centers = await damsRepository.getInquiries(searchParams)
-            return centers
+            const inquiries = await damsRepository.getInquiries(searchParams)
+            return inquiries
         }catch(err){
             throw err
         }
@@ -42,6 +42,6 @@ module.exports = (damsRepository) => {
     }
 
     return {
-        getCenters: getCenters
+        getInquiries: getInquiries
     };
 };

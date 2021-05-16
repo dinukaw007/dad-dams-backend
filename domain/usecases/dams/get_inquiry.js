@@ -21,10 +21,10 @@ module.exports = (damsRepository) => {
      * @param domainRequest
      * @returns {Promise<{resDesc: string, errorMassage: string, resCode: string}>}
      */
-    async function getCenters(districtId) {
+    async function getInquiry(inquiryId) {
         try {
-            const centers = await damsRepository.getCenters(districtId)
-            return centers
+            const inquiry = await damsRepository.getInquiry(inquiryId)
+            return inquiry
         }catch(err){
             throw err
         }
@@ -32,6 +32,6 @@ module.exports = (damsRepository) => {
     }
 
     return {
-        getCenters: getCenters
+        getInquiry: getInquiry
     };
 };

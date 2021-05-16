@@ -197,8 +197,34 @@ module.exports = (app) => {
         }
     }
 
-    async function getInquiry(req, res){}
-    async function getInquiries(req, res){}
+    async function getInquiry(req, res){
+        await logger.info(`Get Malpractices Controller`);
+        const {params} = req
+        try {
+            let inquiry = await getInquiryUsecase.getInquiry(params.inquiryId)
+            return res.status(responseCodes.OK).json(
+                responseMapper.map(
+                    inquiry
+                )
+            );
+        } catch (err) {
+            asyncErrorHandler.handle(err, res);
+        }
+    }
+    async function getInquiries(req, res){
+        await logger.info(`Get Malpractices Controller`);
+        const {query} = req
+        try {
+            let inquiries = await getInquiriesUsecase.getInquiries(query)
+            return res.status(responseCodes.OK).json(
+                responseMapper.map(
+                    inquiries
+                )
+            );
+        } catch (err) {
+            asyncErrorHandler.handle(err, res);
+        }
+    }
     async function tester(req, res){
         return res.status(responseCodes.OK).json(
             responseMapper.map(
