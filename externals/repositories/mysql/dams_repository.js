@@ -136,7 +136,13 @@ module.exports = (dbAdapter) => {
         const offset = searchParams.offset
         const limit = searchParams.limit
 
+        const whereObj = {}
+        if(searchParams.inquiry_type_id != null){
+            whereObj.inquiry_type_id = searchParams.inquiry_type_id
+        }
+
         return await inquiryModel.findAndCountAll({
+            where: whereObj,
             offset: offset,
             limit: limit,
             order: [

@@ -31,6 +31,7 @@ module.exports = (damsRepository) => {
                 limit: pageLimit,
                 offset: pageOffset,
                 sort: data.sort || 'ASC',
+                inquiry_type_id: data.inquiry_type_id || null
             }
 
             const inquiries = await damsRepository.getInquiries(searchParams)
