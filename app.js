@@ -37,8 +37,17 @@ require('dotenv').config();
 */
 
 const express = require('express');
+
 let app = express();
 
+
+/*
+|--------------------------------------------------------------------------
+| Import cors
+|--------------------------------------------------------------------------
+|
+*/
+var cors = require('cors')
 
 /*
 |--------------------------------------------------------------------------
@@ -101,6 +110,10 @@ require('./app/middleware/request_alter_middleware')(app);
 
 // enable JSON body parsing
 app.use(express.json());
+
+
+// enable cors
+app.use(cors());
 
 
 /*
