@@ -14,6 +14,7 @@ const schema = {
     file_start_date: DataTypes.DATE,
     file_name: DataTypes.STRING,
     file_start_reason: DataTypes.STRING,
+    inquiry_type_id: DataTypes.INTEGER,
     malpractice_type: DataTypes.INTEGER,
     name: DataTypes.STRING,
     nic: DataTypes.STRING,

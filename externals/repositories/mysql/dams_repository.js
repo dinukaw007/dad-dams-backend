@@ -91,7 +91,8 @@ module.exports = (dbAdapter) => {
      * @return {Promise<*>}
      */
     async function addInquiry (data) {
-        return await inquiryModel.create(data)
+        console.log(data)
+        return inquiryModel.create(data);
     }
 
     /**

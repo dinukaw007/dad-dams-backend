@@ -125,7 +125,7 @@ module.exports = (app) => {
 
     }
     async function createInquiry(req, res){
-        await logger.info(`Get Districts Controller ${req}`);
+        await logger.info(`Get Districts Controller ${JSON.stringify(req.body)}`);
         try {
             let data = req.body
             // Defining validation rules
