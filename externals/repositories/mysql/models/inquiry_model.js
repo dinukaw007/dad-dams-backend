@@ -28,6 +28,7 @@ const schema = {
     submitted_date: DataTypes.DATE,
     amount_due: DataTypes.INTEGER,
     amount_charged: DataTypes.INTEGER,
+    state: DataTypes.INTEGER,
     updatedAt: DataTypes.DATE,
     createdAt: DataTypes.DATE,
     createdBy: DataTypes.INTEGER,
