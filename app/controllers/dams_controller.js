@@ -138,7 +138,6 @@ module.exports = (app) => {
                 },
                 file_start_date: {
                     presence: true,
-
                 },
                 file_name: {
                     presence: true,

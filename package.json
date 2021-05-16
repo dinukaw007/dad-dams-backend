@@ -6,8 +6,7 @@
   "main": "service.js",
   "scripts": {
     "start": "nodemon service.js",
-    "test": "jest",
-    "build": "grunt build:prod"
+    "test": "jest"
   },
   "author": "ImitiLabs (Pvt) Ltd",
   "dependencies": {
