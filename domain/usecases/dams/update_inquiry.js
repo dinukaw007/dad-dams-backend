@@ -23,7 +23,16 @@ module.exports = (damsRepository) => {
      */
     async function updateInquiry(data) {
         try {
-            //if need to run extra validations - add code
+
+            for (let prop in data) {
+                if (data[prop] === ''){
+                    delete data[prop]
+                }
+                if (data[prop] === null){
+                    delete data[prop]
+                }
+
+            }
 
             const centers = await damsRepository.updateInquiry(data)
             return centers

@@ -34,6 +34,7 @@ module.exports = (damsRepository) => {
                 inquiry_type_id: data.inquiry_type_id || null
             }
 
+
             const inquiries = await damsRepository.getInquiries(searchParams)
             return inquiries
         }catch(err){
