@@ -23,11 +23,13 @@ const malpracticeTypesUsecaseImp = require('./../../domain/usecases/dams/get_mal
 const postionsUsecaseImp = require('./../../domain/usecases/dams/get_positions');
 
 
+
 const createInquiryUsecaseImp = require('./../../domain/usecases/dams/create_inquiry');
 const updateInquiryUsecaseImp = require('./../../domain/usecases/dams/update_inquiry');
 const getInquiryUsecaseImp = require('./../../domain/usecases/dams/get_inquiry');
 const getInquriesUsecaseImp = require('./../../domain/usecases/dams/get_inquiries');
-
+const situationUsecaseImp = require('./../../domain/usecases/dams/add_current_situation_inquiry');
+const leisonOfficersUsecaseImp = require('./../../domain/usecases/dams/add_leison_officers');
 
 const LoggingUtils = require('./../../externals/log/logging_utils');
 
@@ -50,6 +52,8 @@ module.exports = (app) => {
     const updateInquiryUsecase = updateInquiryUsecaseImp(container.repositories.damsRepository);
     const getInquiryUsecase = getInquiryUsecaseImp(container.repositories.damsRepository);
     const getInquiriesUsecase = getInquriesUsecaseImp(container.repositories.damsRepository);
+    const addSituationUsecase = situationUsecaseImp(container.repositories.damsRepository);
+    const addLeisonOfficersUsecase = leisonOfficersUsecaseImp(container.repositories.damsRepository);
 
 
     async function getDistricts(req, res){
@@ -225,6 +229,69 @@ module.exports = (app) => {
             asyncErrorHandler.handle(err, res);
         }
     }
+
+    async function addLesisonOfficers(req, res){
+        await logger.info(`Get Districts Controller ${JSON.stringify(req.body)}`);
+        try {
+            let data = req.body
+            // Defining validation rules
+            const rules = {
+                inquiry_id: {
+                    presence: true,
+                },
+
+            };
+
+            // Validate the request
+            validator.validate(data, rules);
+
+
+            // Call domain business logic
+            let domainResponseDto = await addLeisonOfficersUsecase.addLeisonOfficers(data);
+
+            //Transform domain response
+            return res.status(responseCodes.OK).json(
+                responseMapper.map(
+                    domainResponseDto
+                )
+            );
+
+        } catch (err) {
+            asyncErrorHandler.handle(err, res);
+        }
+    }
+
+    async function addCurrentState(req, res){
+        await logger.info(`Get Districts Controller ${JSON.stringify(req.body)}`);
+        try {
+            let data = req.body
+            // Defining validation rules
+            const rules = {
+                inquiry_id: {
+                    presence: true,
+                },
+
+            };
+
+            // Validate the request
+            validator.validate(data, rules);
+
+
+            // Call domain business logic
+            let domainResponseDto = await addSituationUsecase.addCurrentSituation(data);
+
+            //Transform domain response
+            return res.status(responseCodes.OK).json(
+                responseMapper.map(
+                    domainResponseDto
+                )
+            );
+
+        } catch (err) {
+            asyncErrorHandler.handle(err, res);
+        }
+    }
+
     async function tester(req, res){
         return res.status(responseCodes.OK).json(
             responseMapper.map(
@@ -232,6 +299,7 @@ module.exports = (app) => {
             )
         );
     }
+
 
 
 
@@ -245,6 +313,8 @@ module.exports = (app) => {
         updateInquiry: updateInquiry,
         getInquiry: getInquiry,
         getInquiries: getInquiries,
-        tester:tester
+        tester:tester,
+        addCurrentState: addCurrentState,
+        addLesisonOfficers: addLesisonOfficers
     };
 }

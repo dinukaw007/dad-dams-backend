@@ -12,6 +12,7 @@ module.exports = (dbAdapter) => {
     const positionsModel = require('./models/position')(dbAdapter)
     const malpracticesModel = require('./models/malpractice_types')(dbAdapter)
     const otherLeisonOfficersModel = require('./models/other_liaison_officers')(dbAdapter)
+    const currentSitationModel = require('./models/current_situation')(dbAdapter)
 
     otherLeisonOfficersModel.belongsTo(inquiryModel, {
         foreignKey: 'inquiry_id',
@@ -19,6 +20,15 @@ module.exports = (dbAdapter) => {
     })
     inquiryModel.hasMany(otherLeisonOfficersModel, {
         as: 'other_liaison_officers',
+        foreignKey:'inquiry_id'
+    })
+
+    currentSitationModel.belongsTo(inquiryModel, {
+        foreignKey: 'inquiry_id',
+        targetKey:'inquiry_id'
+    })
+    inquiryModel.hasMany(currentSitationModel, {
+        as: 'current_situation',
         foreignKey:'inquiry_id'
     })
 
@@ -111,7 +121,8 @@ module.exports = (dbAdapter) => {
         data.file_name = currentInquiryRecord.file_name
         data.file_start_reason = currentInquiryRecord.file_start_reason
         let merged = {...currentInquiryRecord.dataValues, ...data};
-        return await inquiryModel.update(merged,{where:{inquiry_id:data.inquiry_id}});
+        await inquiryModel.update(merged,{where:{inquiry_id:data.inquiry_id}});
+        return await inquiryModel.findOne({where:{inquiry_id:data.inquiry_id}});
     }
 
     /**
@@ -135,6 +146,8 @@ module.exports = (dbAdapter) => {
             order: [
                 ['file_start_date', 'DESC']
             ], // add query parms here
+
+
         })
     }
     /**
@@ -146,9 +159,50 @@ module.exports = (dbAdapter) => {
         return await inquiryModel.findOne({
             where:{
                 inquiry_id: inquiryId
-            }
+            },
+            include: [
+                {model: currentSitationModel,
+                    as:"current_situation"},
+                {model: otherLeisonOfficersModel,
+                    as: "other_liaison_officers"}
+            ]
         })
     }
+
+    /**
+     * .
+     * @param districtId
+     * @return {Promise<*>}
+     */
+    async function AddLeisonOfficers (data) {
+        data.other_liaison_officers.forEach(function(itm){
+            itm.inquiry_id = data.inquiry_id;
+        });
+        return await otherLeisonOfficersModel.bulkCreate(data.other_liaison_officers)
+    }
+
+    /**
+     * .
+     * @param districtId
+     * @return {Promise<*>}
+     */
+    async function addCurrentSituation (data) {
+
+        const foundItem = await currentSitationModel.findOne({where:{
+                inquiry_id: data.inquiry_id
+            }});
+        if (!foundItem) {
+            // Item not found, create a new one
+            return currentSitationModel.create(data);
+
+        }
+        // Found an item, update it
+        return await currentSitationModel.update(data, { where: {
+                inquiry_id: data.inquiry_id
+            }});
+
+    }
+
 
 
     return {
@@ -160,7 +214,9 @@ module.exports = (dbAdapter) => {
         addInquiry:addInquiry,
         updateInquiry:updateInquiry,
         getInquiries:getInquiries,
-        getInquiry:getInquiry
+        getInquiry:getInquiry,
+        addCurrentSituation: addCurrentSituation,
+        AddLeisonOfficers: AddLeisonOfficers
 
     }
 }
