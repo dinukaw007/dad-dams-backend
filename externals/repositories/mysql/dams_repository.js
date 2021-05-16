@@ -105,7 +105,20 @@ module.exports = (dbAdapter) => {
                 inquiry_id: data.inquiry_id
             }
         })
-        return await inquiryModel.bulkCreate([data],{
+        const currentInquiryRecord = await inquiryModel.findOne({
+            where:{
+                inquiry_id: data.inquiry_id
+            }
+        })
+        data.file_no = currentInquiryRecord.file_no
+        data.file_start_date = currentInquiryRecord.file_start_date
+        data.file_name = currentInquiryRecord.file_name
+        data.file_start_reason = currentInquiryRecord.file_start_reason
+
+
+        let merged = {...currentInquiryRecord.dataValues, ...data};
+
+        return await inquiryModel.bulkCreate([merged],{
             updateOnDuplicate: ["inquiry_id", "file_no"],
             include:{
                 model: otherLeisonOfficersModel,
@@ -124,7 +137,8 @@ module.exports = (dbAdapter) => {
         const limit = searchParams.limit
 
         return await inquiryModel.findAndCountAll({
-            attributes: [''],
+            offset: offset,
+            limit: limit,
             order: [
                 ['file_start_date', 'DESC']
             ], // add query parms here
@@ -135,8 +149,12 @@ module.exports = (dbAdapter) => {
      * @param districtId
      * @return {Promise<*>}
      */
-    async function getInquiry (data) {
-        return await inquiryModel.findOne()
+    async function getInquiry (inquiryId) {
+        return await inquiryModel.findOne({
+            where:{
+                inquiry_id: inquiryId
+            }
+        })
     }
 
 
