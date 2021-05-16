@@ -23,7 +23,6 @@ module.exports = (damsRepository) => {
      */
     async function updateInquiry(data) {
         try {
-
             for (let prop in data) {
                 if (data[prop] === ''){
                     delete data[prop]
@@ -31,11 +30,9 @@ module.exports = (damsRepository) => {
                 if (data[prop] === null){
                     delete data[prop]
                 }
-
             }
-
-            const centers = await damsRepository.updateInquiry(data)
-            return centers
+            const inquiry = await damsRepository.updateInquiry(data)
+            return inquiry
         }catch(err){
             throw err
         }

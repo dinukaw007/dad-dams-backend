@@ -133,7 +133,7 @@ module.exports = (app) => {
                 file_no: {
                     presence: true,
                 },
-                inquiry_type_no: {
+                inquiry_type_id: {
                     presence: true,
                 },
                 file_start_date: {
