@@ -101,31 +101,17 @@ module.exports = (dbAdapter) => {
      * @return {Promise<*>}
      */
     async function updateInquiry (data) {
-        await otherLeisonOfficersModel.destroy({
-            where:{
-                inquiry_id: data.inquiry_id
-            }
-        })
         const currentInquiryRecord = await inquiryModel.findOne({
             where:{
                 inquiry_id: data.inquiry_id
             }
-        })
+        });
         data.file_no = currentInquiryRecord.file_no
         data.file_start_date = currentInquiryRecord.file_start_date
         data.file_name = currentInquiryRecord.file_name
         data.file_start_reason = currentInquiryRecord.file_start_reason
-
-
         let merged = {...currentInquiryRecord.dataValues, ...data};
-
-        return await inquiryModel.bulkCreate([merged],{
-            updateOnDuplicate: ["inquiry_id", "file_no"],
-            include:{
-                model: otherLeisonOfficersModel,
-                as: 'other_liaison_officers'
-            }
-        })
+        return await inquiryModel.update(merged,{where:{inquiry_id:data.inquiry_id}});
     }
 
     /**
