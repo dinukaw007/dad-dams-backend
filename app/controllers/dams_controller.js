@@ -58,7 +58,7 @@ module.exports = (app) => {
     const getCurrentSituationInquiryUsecase = getCurrentSituationInquiryImp(container.repositories.damsRepository);
 
 
-    async function getDistricts(req, res){
+    async function getDistricts(req, res) {
         await logger.info(`Get Districts Controller`);
         try {
             let districts = await districtsUsecase.getDistricts()
@@ -71,8 +71,8 @@ module.exports = (app) => {
             asyncErrorHandler.handle(err, res);
         }
     }
-    async function getCenters(req, res){
-        const {params} = req
+    async function getCenters(req, res) {
+        const { params } = req
         await logger.info(`Get Centers Controller`);
         try {
             let centers = await centersUsecase.getCenters(params.districtId)
@@ -86,7 +86,7 @@ module.exports = (app) => {
         }
 
     }
-    async function getPositions(req, res){
+    async function getPositions(req, res) {
         await logger.info(`Get Positions Controller`);
         try {
             let positions = await positionsUsecase.getPositions()
@@ -101,7 +101,7 @@ module.exports = (app) => {
 
     }
 
-    async function getInquiryTypes(req, res){
+    async function getInquiryTypes(req, res) {
         await logger.info(`Get Inquiry Types Controller`);
         try {
             let inquirytypes = await inquiryTypesUsecase.getInquiryTypes()
@@ -116,7 +116,7 @@ module.exports = (app) => {
 
     }
 
-    async function getMalpracticeTypes(req, res){
+    async function getMalpracticeTypes(req, res) {
         await logger.info(`Get Malpractices Controller`);
         try {
             let malpractices = await malpracticeTypesUsecase.getMalpractices()
@@ -130,7 +130,7 @@ module.exports = (app) => {
         }
 
     }
-    async function createInquiry(req, res){
+    async function createInquiry(req, res) {
         await logger.info(`Get Districts Controller ${JSON.stringify(req.body)}`);
         try {
             let data = req.body
@@ -173,7 +173,7 @@ module.exports = (app) => {
             asyncErrorHandler.handle(err, res);
         }
     }
-    async function updateInquiry(req, res){
+    async function updateInquiry(req, res) {
         await logger.info(`Get Districts Controller ${req}`);
         try {
             let data = req.body;
@@ -203,9 +203,9 @@ module.exports = (app) => {
         }
     }
 
-    async function getInquiry(req, res){
+    async function getInquiry(req, res) {
         await logger.info(`Get Malpractices Controller`);
-        const {params} = req
+        const { params } = req
         try {
             let inquiry = await getInquiryUsecase.getInquiry(params.inquiryId)
             return res.status(responseCodes.OK).json(
@@ -217,9 +217,9 @@ module.exports = (app) => {
             asyncErrorHandler.handle(err, res);
         }
     }
-    async function getInquiries(req, res){
+    async function getInquiries(req, res) {
         await logger.info(`Get Malpractices Controller`);
-        const {query} = req
+        const { query } = req
         try {
             let inquiries = await getInquiriesUsecase.getInquiries(query)
             return res.status(responseCodes.OK).json(
@@ -232,7 +232,7 @@ module.exports = (app) => {
         }
     }
 
-    async function addLesisonOfficers(req, res){
+    async function addLesisonOfficers(req, res) {
         await logger.info(`Get Districts Controller ${JSON.stringify(req.body)}`);
         try {
             let data = req.body
@@ -263,7 +263,7 @@ module.exports = (app) => {
         }
     }
 
-    async function addCurrentState(req, res){
+    async function addCurrentState(req, res) {
         await logger.info(`Get Districts Controller ${JSON.stringify(req.body)}`);
         try {
             let data = req.body
@@ -294,7 +294,7 @@ module.exports = (app) => {
         }
     }
 
-    async function tester(req, res){
+    async function tester(req, res) {
         return res.status(responseCodes.OK).json(
             responseMapper.map(
                 "shit works"
@@ -302,8 +302,8 @@ module.exports = (app) => {
         );
     }
 
-    async function getLesisonOfficers(req, res){
-        const {params} = req
+    async function getLesisonOfficers(req, res) {
+        const { params } = req
         await logger.info(`GetLesison Officers`);
         try {
             let centers = await getLeisonOfficersUsecase.getLeisonOfficers(params.inquiryId)
@@ -318,9 +318,9 @@ module.exports = (app) => {
 
     }
 
-    
-    async function getCurrentSituationInquiry(req, res){
-        const {params} = req
+
+    async function getCurrentSituationInquiry(req, res) {
+        const { params } = req
         await logger.info(`GetLesison Officers`);
         try {
             let centers = await getCurrentSituationInquiryUsecase.getCurrentSituationInquiry(params.inquiryId)
@@ -335,23 +335,67 @@ module.exports = (app) => {
 
     }
 
+    async function inquiryFinalize(req, res) {
+        await logger.info(`Get Districts Controller ${req}`);
+        try {
+            let data = req.body;
+
+            // Defining validation rules
+            const rules = {
+                inquiry_id: {
+                    presence: true,
+                },
+                is_sent_to_archive: {
+                    presence: true,
+
+                }, archived_date: {
+                    presence: true,
+
+                }, is_work_done: {
+                    presence: true,
+
+                }, work_done_date: {
+                    presence: true,
+                }
+            };
+
+            // Validate the request
+            validator.validate(data, rules);
+            data.state =2;
+            // Call domain business logic
+            let domainResponseDto = await updateInquiryUsecase.updateInquiry(data);
+
+            //Transform domain response
+            return res.status(responseCodes.OK).json(
+                responseMapper.map(
+                    domainResponseDto
+                )
+            );
+
+        } catch (err) {
+            asyncErrorHandler.handle(err, res);
+        }
+    }
+
 
 
 
     return {
         getDistricts: getDistricts,
         getCenters: getCenters,
-        getPositions:getPositions,
-        getInquiryTypes:getInquiryTypes,
+        getPositions: getPositions,
+        getInquiryTypes: getInquiryTypes,
         getMalpracticeTypes: getMalpracticeTypes,
         createInquiry: createInquiry,
         updateInquiry: updateInquiry,
         getInquiry: getInquiry,
         getInquiries: getInquiries,
-        tester:tester,
+        tester: tester,
         addCurrentState: addCurrentState,
         addLesisonOfficers: addLesisonOfficers,
-        getLesisonOfficers:getLesisonOfficers,
-        getCurrentSituationInquiry:getCurrentSituationInquiry
+        getLesisonOfficers: getLesisonOfficers,
+        getCurrentSituationInquiry: getCurrentSituationInquiry,
+        inquiryFinalize: inquiryFinalize
+
     };
 }

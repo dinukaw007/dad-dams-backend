@@ -30,6 +30,13 @@ const schema = {
     amount_charged: DataTypes.INTEGER,
     state: DataTypes.INTEGER,
     updatedAt: DataTypes.DATE,
+    
+    archived_date: DataTypes.DATE,
+    work_done_date: DataTypes.DATE,
+    is_sent_to_archive: DataTypes.INTEGER,
+    is_work_done: DataTypes.INTEGER,
+
+
     createdAt: DataTypes.DATE,
     createdBy: DataTypes.INTEGER,
     updatedBy: DataTypes.INTEGER
