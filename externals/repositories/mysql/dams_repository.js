@@ -95,6 +95,23 @@ module.exports = (dbAdapter) => {
         })
     }
 
+
+      /**
+     * .
+     * @param inquiryId
+     * @return {Promise<*>}
+     */
+       async function getLeisonOfficers (inquiryId) {
+        const whereObj = {}
+        if(inquiryId){
+            whereObj.inquiry_id = inquiryId
+        }
+        return await otherLeisonOfficersModel.findAll({
+            where: whereObj
+        })
+    }
+
+
     /**
      * .
      * @param districtId
@@ -216,7 +233,8 @@ module.exports = (dbAdapter) => {
         getInquiries:getInquiries,
         getInquiry:getInquiry,
         addCurrentSituation: addCurrentSituation,
-        AddLeisonOfficers: AddLeisonOfficers
+        AddLeisonOfficers: AddLeisonOfficers,
+        getLeisonOfficers:getLeisonOfficers
 
     }
 }

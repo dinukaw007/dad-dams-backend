@@ -42,4 +42,5 @@ module.exports = (app) => {
     app.post('/api/inquiry/addleisonofficerse', damsController.addLesisonOfficers)
     app.get('/api/inquiry', damsController.getInquiries)
     app.get('/api/inquiry/:inquiryId', damsController.getInquiry)
+    app.get('/api/inquiry/:inquiryId/leisonofficers', damsController.getLesisonOfficers)
 };

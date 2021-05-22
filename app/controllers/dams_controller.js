@@ -18,6 +18,7 @@ const SampleDomainRequestDto = require('../../domain/entities/sample_domain_requ
 
 const districtsUsecaseImp = require('./../../domain/usecases/dams/get_districts');
 const centersUsecaseImp = require('./../../domain/usecases/dams/get_centers');
+const getLeisonOfficersImp = require('./../../domain/usecases/dams/get_leison_officers');
 const inquiryTypesUsecaseImp = require('./../../domain/usecases/dams/get_inquiry_types');
 const malpracticeTypesUsecaseImp = require('./../../domain/usecases/dams/get_malpractice_types');
 const postionsUsecaseImp = require('./../../domain/usecases/dams/get_positions');
@@ -44,6 +45,7 @@ module.exports = (app) => {
 
     const districtsUsecase = districtsUsecaseImp(container.repositories.damsRepository);
     const centersUsecase = centersUsecaseImp(container.repositories.damsRepository);
+    const getLeisonOfficersUsecase = getLeisonOfficersImp(container.repositories.damsRepository);
     const inquiryTypesUsecase = inquiryTypesUsecaseImp(container.repositories.damsRepository);
     const malpracticeTypesUsecase = malpracticeTypesUsecaseImp(container.repositories.damsRepository);
     const positionsUsecase = postionsUsecaseImp(container.repositories.damsRepository);
@@ -300,6 +302,22 @@ module.exports = (app) => {
         );
     }
 
+    async function getLesisonOfficers(req, res){
+        const {params} = req
+        await logger.info(`GetLesison Officers`);
+        try {
+            let centers = await getLeisonOfficersUsecase.getLeisonOfficers(params.inquiryId)
+            return res.status(responseCodes.OK).json(
+                responseMapper.map(
+                    centers
+                )
+            );
+        } catch (err) {
+            asyncErrorHandler.handle(err, res);
+        }
+
+    }
+
 
 
 
@@ -315,6 +333,7 @@ module.exports = (app) => {
         getInquiries: getInquiries,
         tester:tester,
         addCurrentState: addCurrentState,
-        addLesisonOfficers: addLesisonOfficers
+        addLesisonOfficers: addLesisonOfficers,
+        getLesisonOfficers:getLesisonOfficers
     };
 }
