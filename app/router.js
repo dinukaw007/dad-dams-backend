@@ -38,9 +38,10 @@ module.exports = (app) => {
     app.get('/api/data/malpracticetypes', damsController.getMalpracticeTypes)
     app.post('/api/inquiry', damsController.createInquiry)
     app.put('/api/inquiry', damsController.updateInquiry)
-    app.post('/api/inquiry/addcurrentstate', damsController.addCurrentState)
+    app.post('/api/inquiry/addcurrentstate', damsController.addCurrentState)   
     app.post('/api/inquiry/addleisonofficerse', damsController.addLesisonOfficers)
     app.get('/api/inquiry', damsController.getInquiries)
     app.get('/api/inquiry/:inquiryId', damsController.getInquiry)
     app.get('/api/inquiry/:inquiryId/leisonofficers', damsController.getLesisonOfficers)
+    app.get('/api/inquiry/:inquiryId/currentsituation', damsController.getCurrentSituationInquiry)
 };

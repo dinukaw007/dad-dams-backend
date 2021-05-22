@@ -19,12 +19,10 @@ const SampleDomainRequestDto = require('../../domain/entities/sample_domain_requ
 const districtsUsecaseImp = require('./../../domain/usecases/dams/get_districts');
 const centersUsecaseImp = require('./../../domain/usecases/dams/get_centers');
 const getLeisonOfficersImp = require('./../../domain/usecases/dams/get_leison_officers');
+
 const inquiryTypesUsecaseImp = require('./../../domain/usecases/dams/get_inquiry_types');
 const malpracticeTypesUsecaseImp = require('./../../domain/usecases/dams/get_malpractice_types');
 const postionsUsecaseImp = require('./../../domain/usecases/dams/get_positions');
-
-
-
 const createInquiryUsecaseImp = require('./../../domain/usecases/dams/create_inquiry');
 const updateInquiryUsecaseImp = require('./../../domain/usecases/dams/update_inquiry');
 const getInquiryUsecaseImp = require('./../../domain/usecases/dams/get_inquiry');
@@ -32,6 +30,7 @@ const getInquriesUsecaseImp = require('./../../domain/usecases/dams/get_inquirie
 const situationUsecaseImp = require('./../../domain/usecases/dams/add_current_situation_inquiry');
 const leisonOfficersUsecaseImp = require('./../../domain/usecases/dams/add_leison_officers');
 
+const getCurrentSituationInquiryImp = require('./../../domain/usecases/dams/get_current_situation_inquiry');
 const LoggingUtils = require('./../../externals/log/logging_utils');
 
 module.exports = (app) => {
@@ -56,6 +55,7 @@ module.exports = (app) => {
     const getInquiriesUsecase = getInquriesUsecaseImp(container.repositories.damsRepository);
     const addSituationUsecase = situationUsecaseImp(container.repositories.damsRepository);
     const addLeisonOfficersUsecase = leisonOfficersUsecaseImp(container.repositories.damsRepository);
+    const getCurrentSituationInquiryUsecase = getCurrentSituationInquiryImp(container.repositories.damsRepository);
 
 
     async function getDistricts(req, res){
@@ -318,6 +318,23 @@ module.exports = (app) => {
 
     }
 
+    
+    async function getCurrentSituationInquiry(req, res){
+        const {params} = req
+        await logger.info(`GetLesison Officers`);
+        try {
+            let centers = await getCurrentSituationInquiryUsecase.getCurrentSituationInquiry(params.inquiryId)
+            return res.status(responseCodes.OK).json(
+                responseMapper.map(
+                    centers
+                )
+            );
+        } catch (err) {
+            asyncErrorHandler.handle(err, res);
+        }
+
+    }
+
 
 
 
@@ -334,6 +351,7 @@ module.exports = (app) => {
         tester:tester,
         addCurrentState: addCurrentState,
         addLesisonOfficers: addLesisonOfficers,
-        getLesisonOfficers:getLesisonOfficers
+        getLesisonOfficers:getLesisonOfficers,
+        getCurrentSituationInquiry:getCurrentSituationInquiry
     };
 }

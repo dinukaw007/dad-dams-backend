@@ -30,5 +30,5 @@ let options = {
  * @author  DTE Platform
  */
 module.exports = (app) => {
-    app.use(cors(options));
+    app.use(cors());
 };

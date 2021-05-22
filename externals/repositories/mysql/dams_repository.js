@@ -118,7 +118,7 @@ module.exports = (dbAdapter) => {
      * @return {Promise<*>}
      */
     async function addInquiry (data) {
-        console.log(data)
+        // console.log(data)
         return inquiryModel.create(data);
     }
 
@@ -221,6 +221,23 @@ module.exports = (dbAdapter) => {
     }
 
 
+        /**
+     * .
+     * @param inquiryId
+     * @return {Promise<*>}
+     */
+         async function getCurrentSituationInquiry (inquiryId) {
+            const whereObj = {}
+            if(inquiryId){
+                whereObj.inquiry_id = inquiryId
+            }
+            return await currentSitationModel.findAll({
+                where: whereObj
+            })
+        }
+    
+
+
 
     return {
         getDistricts: getDistricts,
@@ -234,7 +251,8 @@ module.exports = (dbAdapter) => {
         getInquiry:getInquiry,
         addCurrentSituation: addCurrentSituation,
         AddLeisonOfficers: AddLeisonOfficers,
-        getLeisonOfficers:getLeisonOfficers
+        getLeisonOfficers:getLeisonOfficers,
+        getCurrentSituationInquiry:getCurrentSituationInquiry
 
     }
 }

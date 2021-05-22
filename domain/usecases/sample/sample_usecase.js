@@ -27,7 +27,7 @@ module.exports = (repository) => {
 
         // Todo: Execute business logic
         let err = false;
-        console.log(domainRequest.id);
+        // console.log(domainRequest.id);
 
         if(err){
             throw err;
