@@ -204,19 +204,19 @@ module.exports = (dbAdapter) => {
      * @return {Promise<*>}
      */
     async function addCurrentSituation (data) {
+        return await currentSitationModel.create(data);
+        // const foundItem = await currentSitationModel.findOne({where:{
+        //         inquiry_id: data.inquiry_id
+        //     }});
+        // if (!foundItem) {
+        //     // Item not found, create a new one
+        //     return currentSitationModel.create(data);
 
-        const foundItem = await currentSitationModel.findOne({where:{
-                inquiry_id: data.inquiry_id
-            }});
-        if (!foundItem) {
-            // Item not found, create a new one
-            return currentSitationModel.create(data);
-
-        }
-        // Found an item, update it
-        return await currentSitationModel.update(data, { where: {
-                inquiry_id: data.inquiry_id
-            }});
+        // }
+        // // Found an item, update it
+        // return await currentSitationModel.update(data, { where: {
+        //         inquiry_id: data.inquiry_id
+        //     }});
 
     }
 
