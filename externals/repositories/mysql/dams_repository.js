@@ -232,7 +232,8 @@ module.exports = (dbAdapter) => {
                 whereObj.inquiry_id = inquiryId
             }
             return await currentSitationModel.findAll({
-                where: whereObj
+                where: whereObj,
+                order:[['current_situation_date','DESC']]
             })
         }
     
