@@ -345,13 +345,7 @@ module.exports = (app) => {
                 inquiry_id: {
                     presence: true,
                 },
-                is_sent_to_archive: {
-                    presence: true,
-
-                }, archived_date: {
-                    presence: true,
-
-                }, is_work_done: {
+                is_work_done: {
                     presence: true,
 
                 }, work_done_date: {
@@ -361,9 +355,50 @@ module.exports = (app) => {
 
             // Validate the request
             validator.validate(data, rules);
-            data.state =2;
+            data.state = 2;
             // Call domain business logic
             let domainResponseDto = await updateInquiryUsecase.updateInquiry(data);
+
+            //Transform domain response
+            return res.status(responseCodes.OK).json(
+                responseMapper.map(
+                    domainResponseDto
+                )
+            );
+
+        } catch (err) {
+            asyncErrorHandler.handle(err, res);
+        }
+    }
+
+    async function inquiryBasicInformatinUpdate(req, res) {
+        await logger.info(`Get Districts Controller ${req}`);
+        try {
+            let data = req.body;
+
+            // Defining validation rules
+            const rules = {
+                inquiry_id: {
+                    presence: true,
+                },
+                file_name: {
+                    presence: true,
+                }, 
+                file_no: {
+                    presence: true,
+                }, 
+                file_start_reason: {
+                    presence: true,
+                }, 
+                file_start_date: {
+                    presence: true,
+                }
+            };
+
+            // Validate the request
+            validator.validate(data, rules);
+            // Call domain business logic
+            let domainResponseDto = await updateInquiryUsecase.updateBasicInformationInquiry(data);
 
             //Transform domain response
             return res.status(responseCodes.OK).json(
@@ -395,7 +430,8 @@ module.exports = (app) => {
         addLesisonOfficers: addLesisonOfficers,
         getLesisonOfficers: getLesisonOfficers,
         getCurrentSituationInquiry: getCurrentSituationInquiry,
-        inquiryFinalize: inquiryFinalize
+        inquiryFinalize: inquiryFinalize,
+        inquiryBasicInformatinUpdate:inquiryBasicInformatinUpdate
 
     };
 }

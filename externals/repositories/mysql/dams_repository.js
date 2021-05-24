@@ -142,6 +142,21 @@ module.exports = (dbAdapter) => {
         return await inquiryModel.findOne({where:{inquiry_id:data.inquiry_id}});
     }
 
+    async function updateBasicInformationInquiry (data) {
+        const currentInquiryRecord = await inquiryModel.findOne({
+            where:{
+                inquiry_id: data.inquiry_id
+            }
+        });
+        //data.file_no = currentInquiryRecord.file_no
+        // data.file_start_date = currentInquiryRecord.file_start_date
+        // data.file_name = currentInquiryRecord.file_name
+        // data.file_start_reason = currentInquiryRecord.file_start_reason
+        let merged = {...currentInquiryRecord.dataValues, ...data};
+        await inquiryModel.update(merged,{where:{inquiry_id:data.inquiry_id}});
+        return await inquiryModel.findOne({where:{inquiry_id:data.inquiry_id}});
+    }
+
     /**
      * .
      * @param districtId
@@ -253,7 +268,8 @@ module.exports = (dbAdapter) => {
         addCurrentSituation: addCurrentSituation,
         AddLeisonOfficers: AddLeisonOfficers,
         getLeisonOfficers:getLeisonOfficers,
-        getCurrentSituationInquiry:getCurrentSituationInquiry
+        getCurrentSituationInquiry:getCurrentSituationInquiry,
+        updateBasicInformationInquiry:updateBasicInformationInquiry
 
     }
 }

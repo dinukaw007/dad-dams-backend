@@ -39,7 +39,26 @@ module.exports = (damsRepository) => {
 
     }
 
+    async function updateBasicInformationInquiry(data) {
+        try {
+            for (let prop in data) {
+                if (data[prop] === ''){
+                    delete data[prop]
+                }
+                if (data[prop] === null){
+                    delete data[prop]
+                }
+            }
+            const inquiry = await damsRepository.updateBasicInformationInquiry(data)
+            return inquiry
+        }catch(err){
+            throw err
+        }
+
+    }
+
     return {
-        updateInquiry: updateInquiry
+        updateInquiry: updateInquiry,
+        updateBasicInformationInquiry:updateBasicInformationInquiry
     };
 };
