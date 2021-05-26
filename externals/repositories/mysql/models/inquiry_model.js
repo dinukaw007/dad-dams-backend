@@ -35,8 +35,8 @@ const schema = {
     work_done_date: DataTypes.DATE,
     is_sent_to_archive: DataTypes.INTEGER,
     is_work_done: DataTypes.INTEGER,
-
-
+    source_of_investigation: DataTypes.INTEGER,
+    related_field: DataTypes.INTEGER,
     createdAt: DataTypes.DATE,
     createdBy: DataTypes.INTEGER,
     updatedBy: DataTypes.INTEGER

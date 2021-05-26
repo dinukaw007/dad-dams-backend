@@ -34,6 +34,21 @@ module.exports = (dbAdapter) => {
         foreignKey:'inquiry_id'
     })
 
+    // inquiryModel.hasOne(positionsModel, {
+    //     as: 'positions',
+    //     foreignKey:'id'
+    // })
+    // positionsModel.belongsTo(inquiryModel, {
+    //     foreignKey: 'position',
+    // })
+
+    
+
+    // relatedFieldModel.belongsTo(inquiryModel, {
+    //     foreignKey: 'inquiry_id',
+    //     targetKey:'id'
+    // })
+
 
     /**
      * .
@@ -167,6 +182,7 @@ module.exports = (dbAdapter) => {
         data.file_name = currentInquiryRecord.file_name
         data.file_start_reason = currentInquiryRecord.file_start_reason
         let merged = {...currentInquiryRecord.dataValues, ...data};
+        console.log(merged);
         await inquiryModel.update(merged,{where:{inquiry_id:data.inquiry_id}});
         return await inquiryModel.findOne({where:{inquiry_id:data.inquiry_id}});
     }
@@ -225,6 +241,8 @@ module.exports = (dbAdapter) => {
             include: [
                 {model: currentSitationModel,
                     as:"current_situation"},
+                // {model: positionsModel,
+                //         as:"positions"},
                 {model: otherLeisonOfficersModel,
                     as: "other_liaison_officers"}
             ]
