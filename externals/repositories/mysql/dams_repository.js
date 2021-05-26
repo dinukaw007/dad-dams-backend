@@ -34,15 +34,18 @@ module.exports = (dbAdapter) => {
         foreignKey:'inquiry_id'
     })
 
-    // inquiryModel.hasOne(positionsModel, {
-    //     as: 'positions',
-    //     foreignKey:'id'
-    // })
-    // positionsModel.belongsTo(inquiryModel, {
-    //     foreignKey: 'position',
-    // })
+    inquiryModel.belongsTo(positionsModel, {
+        foreignKey: 'position',
+        as: 'positions',
+    })
+    positionsModel.hasMany(inquiryModel, {
+        as: 'positions',
+        foreignKey: 'position'
+    })
 
-    
+
+
+
 
     // relatedFieldModel.belongsTo(inquiryModel, {
     //     foreignKey: 'inquiry_id',
@@ -192,7 +195,7 @@ module.exports = (dbAdapter) => {
             where:{
                 inquiry_id: data.inquiry_id
             }
-        });        
+        });
         currentInquiryRecord.file_no = data.file_no
         currentInquiryRecord.file_start_date = data.file_start_date
         currentInquiryRecord.file_name = data.file_name
@@ -241,8 +244,8 @@ module.exports = (dbAdapter) => {
             include: [
                 {model: currentSitationModel,
                     as:"current_situation"},
-                // {model: positionsModel,
-                //         as:"positions"},
+                {model: positionsModel,
+                        as:"positions"},
                 {model: otherLeisonOfficersModel,
                     as: "other_liaison_officers"}
             ]
@@ -299,7 +302,7 @@ module.exports = (dbAdapter) => {
                 order:[['current_situation_date','DESC']]
             })
         }
-    
+
 
 
 
