@@ -2,7 +2,7 @@
 
 const { DataTypes } = require('sequelize')
 
-const name = 'other_liaison_officers'
+const name = 'liaison_officers'
 
 const schema = {
     id: {
@@ -11,12 +11,12 @@ const schema = {
         autoIncrement: true
     },
     inquiry_id: DataTypes.INTEGER,
-    other_liaison_officer_name: DataTypes.STRING,
-    other_liaison_officer_position: DataTypes.INTEGER,
-    other_liaison_officer_facts: DataTypes.STRING,
-    other_liaison_officer_nic: DataTypes.STRING,
+    liaison_officer_name: DataTypes.STRING,
+    liaison_officer_position: DataTypes.INTEGER,
+    liaison_officer_facts: DataTypes.STRING,
+    liaison_officer_nic: DataTypes.STRING,
     is_default: DataTypes.BOOLEAN,
-    work_suspended: DataTypes.BOOLEAN
+    work_status: DataTypes.INTEGER   
 }
 
 

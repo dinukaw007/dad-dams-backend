@@ -11,7 +11,7 @@ module.exports = (dbAdapter) => {
     const induiryTypesModel = require('./models/inquiry_type')(dbAdapter)
     const positionsModel = require('./models/position')(dbAdapter)
     const malpracticesModel = require('./models/malpractice_types')(dbAdapter)
-    const otherLeisonOfficersModel = require('./models/other_liaison_officers')(dbAdapter)
+    const otherLeisonOfficersModel = require('./models/liaison_officers')(dbAdapter)
     const currentSitationModel = require('./models/current_situation')(dbAdapter)
     const relatedFieldModel = require('./models/related_field')(dbAdapter)
     const sourceOfInvestigationModel = require('./models/source_of_investigation')(dbAdapter)
@@ -21,7 +21,7 @@ module.exports = (dbAdapter) => {
         targetKey:'inquiry_id'
     })
     inquiryModel.hasMany(otherLeisonOfficersModel, {
-        as: 'other_liaison_officers',
+        as: 'liaison_officers',
         foreignKey:'inquiry_id'
     })
 
@@ -40,16 +40,33 @@ module.exports = (dbAdapter) => {
         foreignKey:'position'
     })
 
-
-    // positionsModel.hasOne(inquiryModel, {
-    //     foreignKey: 'position',
-    //     as:'position'
-    // })
-
     inquiryModel.belongsTo(positionsModel, {
         foreignKey: 'position',
         as:'positions'
     })
+
+    //
+    relatedFieldModel.hasMany(inquiryModel, {
+        as: 'related_fields',
+        foreignKey:'related_field'
+    })
+
+    inquiryModel.belongsTo(relatedFieldModel, {
+        foreignKey: 'related_field',
+        as:'related_fields'
+    })
+
+     //
+     sourceOfInvestigationModel.hasMany(inquiryModel, {
+        as: 'source_of_investigations',
+        foreignKey:'source_of_investigation'
+    })
+
+    inquiryModel.belongsTo(sourceOfInvestigationModel, {
+        foreignKey: 'source_of_investigation',
+        as:'source_of_investigations'
+    })
+    
 
     
 
@@ -129,7 +146,7 @@ module.exports = (dbAdapter) => {
      */
     async function getPositions () {
         return await positionsModel.findAll({
-                order: [['name', 'ASC']]
+                order: [['sort_order', 'ASC']]
             }
         )
     }
@@ -248,12 +265,13 @@ module.exports = (dbAdapter) => {
                 inquiry_id: inquiryId
             },
             include: [
-                {model: currentSitationModel,
-                    as:"current_situation"},
-                {model: positionsModel,
-                        as:"positions"},
-                {model: otherLeisonOfficersModel,
-                    as: "other_liaison_officers"}
+                // {model: currentSitationModel,
+                //     as:"current_situation"},
+                {model: positionsModel,as:"positions"},
+                {model: sourceOfInvestigationModel,as:"source_of_investigations"},
+                {model: relatedFieldModel,as:"related_fields"},
+                // {model: otherLeisonOfficersModel,
+                //     as: "other_liaison_officers"}
             ]
         })
     }
@@ -264,10 +282,10 @@ module.exports = (dbAdapter) => {
      * @return {Promise<*>}
      */
     async function AddLeisonOfficers (data) {
-        data.other_liaison_officers.forEach(function(itm){
+        data.liaison_officers.forEach(function(itm){
             itm.inquiry_id = data.inquiry_id;
         });
-        return await otherLeisonOfficersModel.bulkCreate(data.other_liaison_officers)
+        return await otherLeisonOfficersModel.bulkCreate(data.liaison_officers)
     }
 
     /**

@@ -11,7 +11,7 @@ const schema = {
         autoIncrement: true
     },
     name: DataTypes.STRING,
-
+    sort_order: DataTypes.INTEGER,
 }
 /**
  *
