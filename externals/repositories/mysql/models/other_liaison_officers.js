@@ -14,7 +14,9 @@ const schema = {
     other_liaison_officer_name: DataTypes.STRING,
     other_liaison_officer_position: DataTypes.INTEGER,
     other_liaison_officer_facts: DataTypes.STRING,
-    other_liaison_officer_nic: DataTypes.STRING
+    other_liaison_officer_nic: DataTypes.STRING,
+    is_default: DataTypes.BOOLEAN,
+    work_suspended: DataTypes.BOOLEAN
 }
 
 

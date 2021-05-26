@@ -46,4 +46,6 @@ module.exports = (app) => {
     app.get('/api/inquiry/:inquiryId', damsController.getInquiry)
     app.get('/api/inquiry/:inquiryId/leisonofficers', damsController.getLesisonOfficers)
     app.get('/api/inquiry/:inquiryId/currentsituation', damsController.getCurrentSituationInquiry)
+    app.get('/api/relatedfield', damsController.getRelatedField)
+    app.get('/api/sourceofinvestigation', damsController.getSourceOfInvestigation)
 };

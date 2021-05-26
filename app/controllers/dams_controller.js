@@ -31,6 +31,9 @@ const situationUsecaseImp = require('./../../domain/usecases/dams/add_current_si
 const leisonOfficersUsecaseImp = require('./../../domain/usecases/dams/add_leison_officers');
 
 const getCurrentSituationInquiryImp = require('./../../domain/usecases/dams/get_current_situation_inquiry');
+
+const getRelatedFieldImp = require('./../../domain/usecases/dams/get_related_field');
+const getSourceOfInvestigationImp = require('./../../domain/usecases/dams/get_source_of_investigation');
 const LoggingUtils = require('./../../externals/log/logging_utils');
 
 module.exports = (app) => {
@@ -56,6 +59,9 @@ module.exports = (app) => {
     const addSituationUsecase = situationUsecaseImp(container.repositories.damsRepository);
     const addLeisonOfficersUsecase = leisonOfficersUsecaseImp(container.repositories.damsRepository);
     const getCurrentSituationInquiryUsecase = getCurrentSituationInquiryImp(container.repositories.damsRepository);
+    //
+    const getRelatedFieldUsecase = getRelatedFieldImp(container.repositories.damsRepository);
+    const getSourceOfInvestigationUsecase = getSourceOfInvestigationImp(container.repositories.damsRepository);
 
 
     async function getDistricts(req, res) {
@@ -413,7 +419,35 @@ module.exports = (app) => {
     }
 
 
+    async function getRelatedField(req, res) {
+        await logger.info(`Get RelatedField Controller`);
+        try {
+            let relatedField = await getRelatedFieldUsecase.getRelatedField();
+            return res.status(responseCodes.OK).json(
+                responseMapper.map(
+                    relatedField
+                )
+            );
+        } catch (err) {
+            asyncErrorHandler.handle(err, res);
+        }
 
+    }
+
+    async function getSourceOfInvestigation(req, res) {
+        await logger.info(`Get SourceOfInvestigation Controller`);
+        try {
+            let sourceOfInvestigation = await getSourceOfInvestigationUsecase.getSourceOfInvestigation();
+            return res.status(responseCodes.OK).json(
+                responseMapper.map(
+                    sourceOfInvestigation
+                )
+            );
+        } catch (err) {
+            asyncErrorHandler.handle(err, res);
+        }
+
+    }
 
     return {
         getDistricts: getDistricts,
@@ -431,7 +465,9 @@ module.exports = (app) => {
         getLesisonOfficers: getLesisonOfficers,
         getCurrentSituationInquiry: getCurrentSituationInquiry,
         inquiryFinalize: inquiryFinalize,
-        inquiryBasicInformatinUpdate:inquiryBasicInformatinUpdate
+        inquiryBasicInformatinUpdate:inquiryBasicInformatinUpdate,
+        getRelatedField:getRelatedField,
+        getSourceOfInvestigation:getSourceOfInvestigation
 
     };
 }

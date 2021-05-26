@@ -13,6 +13,8 @@ module.exports = (dbAdapter) => {
     const malpracticesModel = require('./models/malpractice_types')(dbAdapter)
     const otherLeisonOfficersModel = require('./models/other_liaison_officers')(dbAdapter)
     const currentSitationModel = require('./models/current_situation')(dbAdapter)
+    const relatedFieldModel = require('./models/related_field')(dbAdapter)
+    const sourceOfInvestigationModel = require('./models/source_of_investigation')(dbAdapter)
 
     otherLeisonOfficersModel.belongsTo(inquiryModel, {
         foreignKey: 'inquiry_id',
@@ -31,6 +33,33 @@ module.exports = (dbAdapter) => {
         as: 'current_situation',
         foreignKey:'inquiry_id'
     })
+
+
+    /**
+     * .
+     * @param sort
+     * @return {Promise<*>}
+     */
+        async function getRelatedField () {
+            return await relatedFieldModel.findAll({
+                order: [['name', 'ASC']]
+                }
+            )
+        }
+
+         /**
+     * .
+     * @param sort
+     * @return {Promise<*>}
+     */
+          async function getSourceOfInvestigation() {
+            return await sourceOfInvestigationModel.findAll({
+                order: [['name', 'ASC']]
+                }
+            )
+        }
+
+
 
     /**
      * .
@@ -143,16 +172,17 @@ module.exports = (dbAdapter) => {
     }
 
     async function updateBasicInformationInquiry (data) {
-        const currentInquiryRecord = await inquiryModel.findOne({
+        let currentInquiryRecord = await inquiryModel.findOne({
             where:{
                 inquiry_id: data.inquiry_id
             }
-        });
-        //data.file_no = currentInquiryRecord.file_no
-        // data.file_start_date = currentInquiryRecord.file_start_date
-        // data.file_name = currentInquiryRecord.file_name
-        // data.file_start_reason = currentInquiryRecord.file_start_reason
-        let merged = {...currentInquiryRecord.dataValues, ...data};
+        });        
+        currentInquiryRecord.file_no = data.file_no
+        currentInquiryRecord.file_start_date = data.file_start_date
+        currentInquiryRecord.file_name = data.file_name
+        currentInquiryRecord.file_start_reason = data.file_start_reason
+
+        let merged = {...currentInquiryRecord.dataValues};
         await inquiryModel.update(merged,{where:{inquiry_id:data.inquiry_id}});
         return await inquiryModel.findOne({where:{inquiry_id:data.inquiry_id}});
     }
@@ -269,7 +299,9 @@ module.exports = (dbAdapter) => {
         AddLeisonOfficers: AddLeisonOfficers,
         getLeisonOfficers:getLeisonOfficers,
         getCurrentSituationInquiry:getCurrentSituationInquiry,
-        updateBasicInformationInquiry:updateBasicInformationInquiry
+        updateBasicInformationInquiry:updateBasicInformationInquiry,
+        getRelatedField:getRelatedField,
+        getSourceOfInvestigation:getSourceOfInvestigation
 
     }
 }
