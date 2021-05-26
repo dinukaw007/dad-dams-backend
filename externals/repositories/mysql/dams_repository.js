@@ -34,13 +34,22 @@ module.exports = (dbAdapter) => {
         foreignKey:'inquiry_id'
     })
 
-    // inquiryModel.hasOne(positionsModel, {
-    //     as: 'positions',
-    //     foreignKey:'id'
-    // })
-    // positionsModel.belongsTo(inquiryModel, {
+
+    positionsModel.hasMany(inquiryModel, {
+        as: 'positions',
+        foreignKey:'position'
+    })
+
+
+    // positionsModel.hasOne(inquiryModel, {
     //     foreignKey: 'position',
+    //     as:'position'
     // })
+
+    inquiryModel.belongsTo(positionsModel, {
+        foreignKey: 'position',
+        as:'positions'
+    })
 
     
 
@@ -241,8 +250,8 @@ module.exports = (dbAdapter) => {
             include: [
                 {model: currentSitationModel,
                     as:"current_situation"},
-                // {model: positionsModel,
-                //         as:"positions"},
+                {model: positionsModel,
+                        as:"positions"},
                 {model: otherLeisonOfficersModel,
                     as: "other_liaison_officers"}
             ]
