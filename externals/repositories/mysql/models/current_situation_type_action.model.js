@@ -2,7 +2,7 @@
 
 const { DataTypes } = require('sequelize')
 
-const name = 'current_situation'
+const name = 'current_situation_type_action'
 
 const schema = {
     id: {
@@ -10,16 +10,8 @@ const schema = {
         primaryKey: true,
         autoIncrement: true
     },
-    inquiry_id: DataTypes.INTEGER,
-    current_situation_type_action: DataTypes.INTEGER,
-    current_situation_date: DataTypes.DATE,
-    current_situation_action_taken: DataTypes.STRING,
-    updatedAt: DataTypes.DATE,
-    createdAt: DataTypes.DATE,
-
+    name: DataTypes.STRING,
 }
-
-
 /**
  *
  * @param dbAdapter

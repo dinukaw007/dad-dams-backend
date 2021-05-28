@@ -34,6 +34,11 @@ const getCurrentSituationInquiryImp = require('./../../domain/usecases/dams/get_
 
 const getRelatedFieldImp = require('./../../domain/usecases/dams/get_related_field');
 const getSourceOfInvestigationImp = require('./../../domain/usecases/dams/get_source_of_investigation');
+
+const getConnectedInquirieImp = require('./../../domain/usecases/dams/get_connected_inquirie');
+const addConnectedInquirieImp = require('./../../domain/usecases/dams/add_connected_inquirie');
+const removeConnectedInquirieImp = require('./../../domain/usecases/dams/remove_connected_inquirie');
+
 const LoggingUtils = require('./../../externals/log/logging_utils');
 
 module.exports = (app) => {
@@ -62,6 +67,10 @@ module.exports = (app) => {
     //
     const getRelatedFieldUsecase = getRelatedFieldImp(container.repositories.damsRepository);
     const getSourceOfInvestigationUsecase = getSourceOfInvestigationImp(container.repositories.damsRepository);
+
+    const  getConnectedInquirieUsecase = getConnectedInquirieImp(container.repositories.damsRepository);
+    const  addConnectedInquirieUsecase = addConnectedInquirieImp(container.repositories.damsRepository);
+    const  removeConnectedInquirieUsecase = removeConnectedInquirieImp(container.repositories.damsRepository);
 
 
     async function getDistricts(req, res) {
@@ -228,6 +237,21 @@ module.exports = (app) => {
         const { query } = req
         try {
             let inquiries = await getInquiriesUsecase.getInquiries(query)
+            return res.status(responseCodes.OK).json(
+                responseMapper.map(
+                    inquiries
+                )
+            );
+        } catch (err) {
+            asyncErrorHandler.handle(err, res);
+        }
+    }
+
+    async function getInquiriesByFileNo(req, res) {
+        await logger.info(`Get getInquiriesByFileNo Controller`);
+        const { query } = req
+        try {
+            let inquiries = await getInquiriesUsecase.getInquiriesByFileNo(query)
             return res.status(responseCodes.OK).json(
                 responseMapper.map(
                     inquiries
@@ -449,6 +473,57 @@ module.exports = (app) => {
 
     }
 
+
+    async function getConnectedInquirie(req, res) {
+        await logger.info(`Get ConnectedInquirie Controller`);
+        const { query } = req
+        try {
+            let connected_inquirie = await getConnectedInquirieUsecase.getConnectedInquirie(query)
+            return res.status(responseCodes.OK).json(
+                responseMapper.map(
+                    connected_inquirie
+                )
+            );
+        } catch (err) {
+            asyncErrorHandler.handle(err, res);
+        }
+    }
+
+
+    async function addConnectedInquirie(req, res) {
+        await logger.info(`Get Districts Controller ${JSON.stringify(req.body)}`);
+        try {
+            let data = req.body
+            // Defining validation rules
+            const rules = {
+                inquiry_id: {
+                    presence: true,
+                },
+                connected_inquiry_id: {
+                    presence: true,
+                },
+
+            };
+
+            // Validate the request
+            validator.validate(data, rules);
+
+            data.status =1;
+            // Call domain business logic
+            let domainResponseDto = await addConnectedInquirieUsecase.addConnectedInquirie(data);
+
+            //Transform domain response
+            return res.status(responseCodes.OK).json(
+                responseMapper.map(
+                    domainResponseDto
+                )
+            );
+
+        } catch (err) {
+            asyncErrorHandler.handle(err, res);
+        }
+    }
+
     return {
         getDistricts: getDistricts,
         getCenters: getCenters,
@@ -467,7 +542,10 @@ module.exports = (app) => {
         inquiryFinalize: inquiryFinalize,
         inquiryBasicInformatinUpdate:inquiryBasicInformatinUpdate,
         getRelatedField:getRelatedField,
-        getSourceOfInvestigation:getSourceOfInvestigation
+        getSourceOfInvestigation:getSourceOfInvestigation,
+        getInquiriesByFileNo:getInquiriesByFileNo,
+        getConnectedInquirie:getConnectedInquirie,
+        addConnectedInquirie:addConnectedInquirie
 
     };
 }

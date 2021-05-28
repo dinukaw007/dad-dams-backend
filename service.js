@@ -47,7 +47,7 @@ if(isClusterMode) {
     let numCPUs = os.cpus().length;
 
     if(cluster.isMaster) {
-        console.log(info);
+        // console.log(info);
 
         // fork workers
         for (let i = 0; i < numCPUs; i++) {

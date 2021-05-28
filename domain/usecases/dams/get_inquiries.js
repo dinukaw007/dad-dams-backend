@@ -43,7 +43,30 @@ module.exports = (damsRepository) => {
 
     }
 
+    async function getInquiriesByFileNo(data) {
+        try {
+            const page = data.page_number || null
+            const limit = data.page_size || null
+            const pageOffset = page ? (page - 1) * limit : null
+            const pageLimit = limit ? parseInt(limit) : null
+            const searchParams = {
+                limit: pageLimit,
+                offset: pageOffset,
+                sort: data.sort || 'ASC',
+                file_no: data.file_no || null
+            }
+
+
+            const inquiries = await damsRepository.getInquiriesByFileNo(searchParams)
+            return inquiries
+        }catch(err){
+            throw err
+        }
+
+    }
+
     return {
-        getInquiries: getInquiries
+        getInquiries: getInquiries,
+        getInquiriesByFileNo:getInquiriesByFileNo
     };
 };
